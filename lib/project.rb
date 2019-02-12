@@ -17,4 +17,9 @@ class Project
     raise "city_cost must be either :high or :low" unless [:high, :low].include? city_cost
     @city_cost = city_cost
   end
+
+  def include?(date)
+    return (@start_date..@end_date).include?(date)
+  end
+
 end
