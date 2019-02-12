@@ -13,6 +13,10 @@ Install with the commands:
 
 Tests are in [RSpec](http://rspec.info/).
 
-Run with the command:
+Run once with the command:
 
     bin/rspec
+
+Or watch for changes with:
+
+    bin/guard
