@@ -6,14 +6,27 @@ class ProjectSet
   end
 
   def reimbursement_type(date)
-    if @projects.any?{ |project| project.start_date == date || project.end_date == date }
-      return :travel
-    end
+    projects = @projects.select{ |project| project.include?(date) }
 
-    if @projects.any?{ |project| project.include?(date) }
+    if projects.count > 1 then
       return :full
     end
 
-    return nil
+    if projects.empty? then
+      return nil
+    end
+
+    project = projects.first
+    other_projects = @projects - projects
+
+    if date == project.start_date || date == project.end_date then
+      if other_projects.any?{ |other_project| other_project.adjacent?(date) } then
+        return :full
+      end
+
+      return :travel
+    end
+
+    return :full
   end
 end

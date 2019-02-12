@@ -22,4 +22,16 @@ class Project
     return (@start_date..@end_date).include?(date)
   end
 
+  def day_before
+    return @start_date - 1
+  end
+
+  def day_after
+    return @end_date + 1
+  end
+
+  def adjacent?(date)
+    return date == day_before || date == day_after
+  end
+
 end

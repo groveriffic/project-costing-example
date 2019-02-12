@@ -15,14 +15,14 @@ RSpec.describe Project do
     end
   end
 
-  context "#include?" do
-    before(:example) do
-      @start_date = Date.new(2019, 2, 12)
-      @end_date = Date.new(2019, 2, 15)
-      city_cost = :high
-      @project = Project.new(@start_date, @end_date, city_cost)
-    end
+  before(:example) do
+    @start_date = Date.new(2019, 2, 12)
+    @end_date = Date.new(2019, 2, 15)
+    city_cost = :high
+    @project = Project.new(@start_date, @end_date, city_cost)
+  end
 
+  context "#include?" do
     example { expect(@project.include?(@start_date - 1)).to be false }
     example { expect(@project.include?(@start_date)).to be true }
     example { expect(@project.include?(@start_date + 1)).to be true }
@@ -30,4 +30,5 @@ RSpec.describe Project do
     example { expect(@project.include?(@end_date)).to be true }
     example { expect(@project.include?(@end_date + 1)).to be false }
   end
+
 end

@@ -20,8 +20,34 @@ RSpec.describe ProjectSet do
       expect(project_set.reimbursement_type(Date.new(2019, 2, 14))).to eq :full
     end
 
-    it "If there is a gap between projects, then the days on either side of that gap are travel days."
-    it "If two projects push up against each other, or overlap, then those days are full days as well."
+    it "If there is a gap between projects, then the days on either side of that gap are travel days." do
+      project_a = Project.new(Date.new(2019, 2, 12), Date.new(2019, 2, 15), :high)
+      project_b = Project.new(Date.new(2019, 2, 17), Date.new(2019, 2, 20), :high)
+      project_set = ProjectSet.new([project_a, project_b])
+
+      expect(project_set.reimbursement_type(project_a.end_date)).to eq :travel
+      expect(project_set.reimbursement_type(project_b.start_date)).to eq :travel
+    end
+
+    context "If two projects push up against each other, or overlap, then those days are full days as well." do
+      it "overlap" do
+        project_a = Project.new(Date.new(2019, 2, 12), Date.new(2019, 2, 15), :high)
+        project_b = Project.new(Date.new(2019, 2, 14), Date.new(2019, 2, 20), :high)
+        project_set = ProjectSet.new([project_a, project_b])
+
+        expect(project_set.reimbursement_type(project_a.end_date)).to eq :full
+        expect(project_set.reimbursement_type(project_b.start_date)).to eq :full
+      end
+
+      it "adjacent" do
+        project_a = Project.new(Date.new(2019, 2, 12), Date.new(2019, 2, 15), :high)
+        project_b = Project.new(Date.new(2019, 2, 16), Date.new(2019, 2, 20), :high)
+        project_set = ProjectSet.new([project_a, project_b])
+
+        expect(project_set.reimbursement_type(project_a.end_date)).to eq :full
+        expect(project_set.reimbursement_type(project_b.start_date)).to eq :full
+      end
+    end
   end
 
   context "#reimbursement_rate" do
