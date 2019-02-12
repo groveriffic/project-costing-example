@@ -2,8 +2,24 @@ require 'project_set'
 
 RSpec.describe ProjectSet do
   context "#reimbursement_type" do
-    it "First day and last day of a project, or sequence of projects, is a travel day."
-    it "Any day in the middle of a project, or sequence of projects, is considered a full day."
+    it "First day and last day of a project, or sequence of projects, is a travel day." do
+      start_date = Date.new(2019, 2, 12)
+      end_date = Date.new(2019, 2, 15)
+      project = Project.new(start_date, end_date, :high)
+      project_set = ProjectSet.new([project])
+      expect(project_set.reimbursement_type(start_date)).to eq :travel
+      expect(project_set.reimbursement_type(end_date)).to eq :travel
+    end
+
+    it "Any day in the middle of a project, or sequence of projects, is considered a full day." do
+      start_date = Date.new(2019, 2, 12)
+      end_date = Date.new(2019, 2, 15)
+      project = Project.new(start_date, end_date, :high)
+      project_set = ProjectSet.new([project])
+      expect(project_set.reimbursement_type(Date.new(2019, 2, 13))).to eq :full
+      expect(project_set.reimbursement_type(Date.new(2019, 2, 14))).to eq :full
+    end
+
     it "If there is a gap between projects, then the days on either side of that gap are travel days."
     it "If two projects push up against each other, or overlap, then those days are full days as well."
   end
