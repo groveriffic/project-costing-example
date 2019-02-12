@@ -5,8 +5,12 @@ class ProjectSet
     @projects = projects
   end
 
+  def projects_on(date)
+    return @projects.select{ |project| project.include?(date) }
+  end
+
   def reimbursement_type(date)
-    projects = @projects.select{ |project| project.include?(date) }
+    projects = projects_on(date)
 
     if projects.count > 1 then
       return :full
@@ -28,6 +32,34 @@ class ProjectSet
     end
 
     return :full
+  end
+
+  def city_cost(date)
+    projects = projects_on(date)
+
+    if projects.any?{ |project| project.city_cost == :high }
+      return :high
+    end
+
+    if projects.any?{ |project| project.city_cost == :low }
+      return :low
+    end
+
+    return nil
+  end
+
+  def start_date
+    @projects.map{ |p| p.start_date }.min
+  end
+
+  def end_date
+    @projects.map{ |p| p.end_date }.max
+  end
+
+  def reimbursement_total
+    return (start_date..end_date).map { |date|
+      ProjectSet.reimbursement_rate(city_cost(date), reimbursement_type(date))
+    }.sum
   end
 
   def ProjectSet.reimbursement_rate(city_cost, reimbursement_type)

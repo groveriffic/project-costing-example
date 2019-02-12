@@ -71,4 +71,27 @@ RSpec.describe ProjectSet do
   context "#reimbursement_total" do
     it "Any given day is only ever counted once, even if two projects are on the same day."
   end
+
+  context "#city_cost" do
+    before(:example) do
+      @project_a = Project.new(Date.new(2019, 2, 12), Date.new(2019, 2, 15), :low)
+      @project_b = Project.new(Date.new(2019, 2, 14), Date.new(2019, 2, 20), :high)
+      @project_set = ProjectSet.new([@project_a, @project_b])
+    end
+
+    it "returns low during a low city_cost project" do
+      expect(@project_set.city_cost(@project_a.start_date)).to eq :low
+    end
+
+    it "returns high during a high city_cost project" do
+      expect(@project_set.city_cost(@project_b.end_date)).to eq :high
+    end
+
+    it "returns high when high and low city_cost projects overlap" do
+      # Note: This is assuming we would prioritize high city_cost, but it wasn't specified in the original requirements
+      # Will update if this assumption is incorrect
+      expect(@project_set.city_cost(@project_a.end_date)).to eq :high
+    end
+
+  end
 end
