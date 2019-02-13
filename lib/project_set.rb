@@ -57,17 +57,12 @@ class ProjectSet
     @projects.map{ |p| p.end_date }.max
   end
 
-  # TODO: Extract as ReimbursementReport class
-  def reimbursement_total
-    return (start_date..end_date).map { |date|
-      cc = city_cost(date)
-      rt = reimbursement_type(date)
-      if cc.nil? then
-        return 0
-      else
-        return ReimbursementDate.new(date, cc, rt).rate
+  def each_date
+    (start_date..end_date).each do |date|
+      if @projects.any?{ |project| project.include?(date) }
+        yield date
       end
-    }.sum
+    end
   end
 
 end

@@ -20,3 +20,9 @@ Run once with the command:
 Or watch for changes with:
 
     bin/guard
+
+## Running the report
+
+Run the built in report with:
+
+    bundle exec ruby main.rb > report.txt

@@ -50,15 +50,6 @@ RSpec.describe ProjectSet do
     end
   end
 
-  context "#reimbursement_total" do
-    it "Any given day is only ever counted once, even if two projects are on the same day." do
-      project_a = Project.new(Date.new(2019, 2, 12), Date.new(2019, 2, 12), :low)
-      project_b = Project.new(Date.new(2019, 2, 12), Date.new(2019, 2, 12), :low)
-      project_set = ProjectSet.new([project_a, project_b])
-      expect(project_set.reimbursement_total).to eq 75
-    end
-  end
-
   context "#city_cost" do
     before(:example) do
       @project_a = Project.new(Date.new(2019, 2, 12), Date.new(2019, 2, 15), :low)

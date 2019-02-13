@@ -29,4 +29,8 @@ class ReimbursementDate
 
     raise "rate not defined for city_cost: #{city_cost} and reimbursement_type: #{reimbursement_type}"
   end
+
+  def to_s
+    return "#{date} - City Cost: #{city_cost} - Reimbursement Type: #{reimbursement_type} - Rate: $#{rate}"
+  end
 end
