@@ -4,10 +4,6 @@ require 'project'
 require 'project_set'
 require 'reimbursement_report'
 
-# TODO: To allow this to be used by someone who doesn't know ruby syntax
-# We would need to consider parsing an input format like CSV or building a UI
-# to enter project data.
-
 # Set 1:
 #   Project 1: Low Cost City Start Date: 9/1/15 End Date: 9/3/15
 puts "Project Set 1"
