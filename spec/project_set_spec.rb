@@ -2,6 +2,36 @@ require 'project_set'
 
 RSpec.describe ProjectSet do
   context "#reimbursement_type" do
+    it "should be influenced by city_cost" do
+      # Set 4 from the original exercise
+      project_set = ProjectSet.new([
+        Project.new(
+          Date.new(2015, 9, 1),
+          Date.new(2015, 9, 1),
+          :low
+        ),
+        Project.new(
+          Date.new(2015, 9, 1),
+          Date.new(2015, 9, 1),
+          :low
+        ),
+        Project.new(
+          Date.new(2015, 9, 2),
+          Date.new(2015, 9, 2),
+          :high
+        ),
+        Project.new(
+          Date.new(2015, 9, 2),
+          Date.new(2015, 9, 3),
+          :high
+        ),
+      ])
+      # All days are travel days due to the transition from low city cost to high
+      expect(project_set.reimbursement_type(Date.new(2015, 9, 1))).to eq :travel
+      expect(project_set.reimbursement_type(Date.new(2015, 9, 2))).to eq :travel
+      expect(project_set.reimbursement_type(Date.new(2015, 9, 3))).to eq :travel
+    end
+
     context "single project" do
       before(:example) do
         @start_date = Date.new(2019, 2, 12)
