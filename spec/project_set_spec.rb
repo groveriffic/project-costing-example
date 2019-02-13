@@ -50,24 +50,6 @@ RSpec.describe ProjectSet do
     end
   end
 
-  context ".reimbursement_rate" do
-    it "A travel day is reimbursed at a rate of 45 dollars per day in a low cost city." do
-      expect(ProjectSet.reimbursement_rate(:low, :travel)).to eq 45
-    end
-
-    it "A travel day is reimbursed at a rate of 55 dollars per day in a high cost city." do
-      expect(ProjectSet.reimbursement_rate(:high, :travel)).to eq 55
-    end
-
-    it "A full day is reimbursed at a rate of 75 dollars per day in a low cost city." do
-      expect(ProjectSet.reimbursement_rate(:low, :full)).to eq 75
-    end
-
-    it "A full day is reimbursed at a rate of 85 dollars per day in a high cost city." do
-      expect(ProjectSet.reimbursement_rate(:high, :full)).to eq 85
-    end
-  end
-
   context "#reimbursement_total" do
     it "Any given day is only ever counted once, even if two projects are on the same day." do
       project_a = Project.new(Date.new(2019, 2, 12), Date.new(2019, 2, 12), :low)
