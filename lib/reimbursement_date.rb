@@ -31,6 +31,6 @@ class ReimbursementDate
   end
 
   def to_s
-    return "#{date} - City Cost: #{city_cost} - Reimbursement Type: #{reimbursement_type} - Rate: $#{rate}"
+    return "#{date} - Reimbursement Type: #{reimbursement_type} - City Cost: #{city_cost} - Rate: $#{rate}"
   end
 end
