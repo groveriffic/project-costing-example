@@ -130,8 +130,7 @@ RSpec.describe ProjectSet do
     end
 
     it "returns high when high and low city_cost projects overlap" do
-      # Note: This is assuming we would prioritize high city_cost, but it wasn't specified in the original requirements
-      # Will update if this assumption is incorrect
+      # Note: This started as an assumption, confirmed via e-mail
       expect(@project_set.city_cost(@project_a.end_date)).to eq :high
     end
   end
