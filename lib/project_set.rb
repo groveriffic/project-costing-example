@@ -11,19 +11,18 @@ class ProjectSet
   end
 
   def reimbursement_type(date)
+    return :travel if date == start_date
+    return :travel if date == end_date
+
     projects = projects_on(date)
 
-    if projects.count > 1 then
-      return :full
-    end
-
-    if projects.empty? then
-      return nil
-    end
+    return nil if projects.empty?
+    return :full if projects.count > 1
 
     project = projects.first
     other_projects = @projects - projects
 
+    # TODO: Rewrite for clarity
     if date == project.start_date || date == project.end_date then
       if other_projects.any?{ |other_project| other_project.adjacent?(date) } then
         return :full
