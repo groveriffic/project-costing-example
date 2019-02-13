@@ -6,45 +6,22 @@ class ProjectSet
     @projects = projects
   end
 
-  def projects_on(date)
-    return @projects.select{ |project| project.include?(date) }
+  def include?(date)
+    return @projects.any?{ |p| p.include?(date) }
   end
 
   def reimbursement_type(date)
-    return :travel if date == start_date
-    return :travel if date == end_date
-
-    projects = projects_on(date)
-
-    return nil if projects.empty?
-    return :full if projects.count > 1
-
-    project = projects.first
-    other_projects = @projects - projects
-
-    # TODO: Rewrite for clarity
-    if date == project.start_date || date == project.end_date then
-      if other_projects.any?{ |other_project| other_project.adjacent?(date) } then
-        return :full
-      end
-
-      return :travel
-    end
-
+    return nil unless include?(date)
+    # travel days act like bookends
+    return :travel unless include?(date - 1)
+    return :travel unless include?(date + 1)
     return :full
   end
 
   def city_cost(date)
-    projects = projects_on(date)
-
-    if projects.any?{ |project| project.city_cost == :high }
-      return :high
-    end
-
-    if projects.any?{ |project| project.city_cost == :low }
-      return :low
-    end
-
+    active_projects = @projects.select{ |project| project.include?(date) }
+    return :high if active_projects.any?{ |p| p.city_cost == :high }
+    return :low if active_projects.any?{ |p| p.city_cost == :low }
     return nil
   end
 
@@ -58,9 +35,7 @@ class ProjectSet
 
   def each_date
     (start_date..end_date).each do |date|
-      if @projects.any?{ |project| project.include?(date) }
-        yield date
-      end
+      yield date if @projects.any?{ |p| p.include?(date) }
     end
   end
 
