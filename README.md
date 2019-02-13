@@ -2,6 +2,8 @@
 
 ## Dependencies
 
+Ruby Version is managed by [rbenv](https://github.com/rbenv/rbenv)
+
 Dependencies are managed by [Bundler](https://bundler.io/)
 
 Install with the commands:
