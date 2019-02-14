@@ -6,16 +6,15 @@ class ProjectSet
     @projects = projects
   end
 
-  def reimbursement_type(date)
-    # travel days act like bookends
-    # changes in city_cost would seem to indicate travel
-    earlier_city_cost = city_cost(date - 1)
-    current_city_cost = city_cost(date)
-    later_city_cost = city_cost(date + 1)
+  def include?(date)
+    return @projects.any?{ |p| p.include?(date) }
+  end
 
-    return nil unless current_city_cost
-    return :travel unless earlier_city_cost == current_city_cost
-    return :travel unless current_city_cost == later_city_cost
+  def reimbursement_type(date)
+    return nil unless include?(date)
+    # travel days act like bookends
+    return :travel unless include?(date - 1)
+    return :travel unless include?(date + 1)
     return :full
   end
 
